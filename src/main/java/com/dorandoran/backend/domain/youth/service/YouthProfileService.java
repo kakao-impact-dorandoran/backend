@@ -10,6 +10,7 @@ import com.dorandoran.backend.domain.youth.YouthProfileRepository;
 import com.dorandoran.backend.domain.youth.dto.YouthProfileCreateRequest;
 import com.dorandoran.backend.domain.youth.dto.YouthProfileCreateResponse;
 import com.dorandoran.backend.domain.youth.dto.YouthProfileResponse;
+import com.dorandoran.backend.domain.youth.dto.YouthProfileUpdateRequest;
 import com.dorandoran.backend.global.error.BusinessException;
 import com.dorandoran.backend.global.error.ErrorCode;
 import com.dorandoran.backend.global.security.ForbiddenWordFilter;
@@ -65,6 +66,30 @@ public class YouthProfileService {
         User youth = loadYouth(userId);
         YouthProfile profile = youthProfileRepository.findByYouth(youth)
                 .orElseThrow(() -> new BusinessException(ErrorCode.YOUTH_PROFILE_NOT_FOUND));
+        return YouthProfileResponse.from(profile);
+    }
+
+    @Transactional
+    public YouthProfileResponse updateMyProfile(UUID userId, YouthProfileUpdateRequest request) {
+        User youth = loadYouth(userId);
+        YouthProfile profile = youthProfileRepository.findByYouth(youth)
+                .orElseThrow(() -> new BusinessException(ErrorCode.YOUTH_PROFILE_NOT_FOUND));
+
+        List<String> keywords = request.keywords();
+        if (keywords != null && keywords.size() > MAX_KEYWORD_COUNT) {
+            throw new BusinessException(ErrorCode.KEYWORD_LIMIT_EXCEEDED);
+        }
+        if (request.greetingComment() != null
+                && forbiddenWordFilter.contains(request.greetingComment())) {
+            throw new BusinessException(ErrorCode.FORBIDDEN_WORD_INCLUDED);
+        }
+
+        profile.update(
+                request.profileImageUrl(),
+                keywords,
+                request.greetingComment(),
+                request.voiceSampleUrl()
+        );
         return YouthProfileResponse.from(profile);
     }
 

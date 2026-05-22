@@ -34,6 +34,10 @@ public enum ErrorCode {
     INVALID_APPROVAL_STATUS(HttpStatus.BAD_REQUEST, "Y006", "Invalid approval status"),
     REJECTION_REASON_REQUIRED(HttpStatus.BAD_REQUEST, "Y007", "Rejection reason is required for REJECTED status"),
 
+    CANNOT_BAN_ADMIN(HttpStatus.FORBIDDEN, "U007", "관리자 계정은 제재할 수 없습니다."),
+    CANNOT_BAN_SELF(HttpStatus.FORBIDDEN, "U008", "자기 자신은 제재할 수 없습니다."),
+    USER_ALREADY_SUSPENDED(HttpStatus.CONFLICT, "U009", "이미 제재된 사용자입니다."),
+
     MATCH_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "M001", "Youth match limit exceeded"),
     MATCH_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "Match not found"),
 
