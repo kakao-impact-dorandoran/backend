@@ -28,6 +28,11 @@ public enum ErrorCode {
 
     KEYWORD_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "Y001", "Keyword limit exceeded (max 5)"),
     FORBIDDEN_WORD_INCLUDED(HttpStatus.BAD_REQUEST, "Y002", "Greeting contains forbidden words"),
+    YOUTH_PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "Y003", "Youth profile not found"),
+    YOUTH_PROFILE_ALREADY_EXISTS(HttpStatus.CONFLICT, "Y004", "Youth profile already exists"),
+    NOT_A_YOUTH_USER(HttpStatus.BAD_REQUEST, "Y005", "Target user is not a youth"),
+    INVALID_APPROVAL_STATUS(HttpStatus.BAD_REQUEST, "Y006", "Invalid approval status"),
+    REJECTION_REASON_REQUIRED(HttpStatus.BAD_REQUEST, "Y007", "Rejection reason is required for REJECTED status"),
 
     MATCH_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "M001", "Youth match limit exceeded"),
     MATCH_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "Match not found"),
