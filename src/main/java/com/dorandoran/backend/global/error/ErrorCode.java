@@ -45,7 +45,15 @@ public enum ErrorCode {
 
     ACTIVITY_RECORD_DUPLICATED(HttpStatus.CONFLICT, "AR001", "Activity record already exists for this schedule"),
 
-    DEVICE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "D001", "Device token is invalid");
+    DEVICE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "D001", "Device token is invalid"),
+
+    ELDER_NOT_FOUND(HttpStatus.NOT_FOUND, "E001", "Elder not found"),
+    ELDER_ACCESS_DENIED(HttpStatus.FORBIDDEN, "E002", "Elder access denied"),
+    NOT_A_GUARDIAN_USER(HttpStatus.FORBIDDEN, "E003", "User is not a guardian"),
+
+    DEVICE_NOT_FOUND(HttpStatus.NOT_FOUND, "D002", "Device not found"),
+    DEVICE_NOT_FOUND_FOR_ELDER(HttpStatus.NOT_FOUND, "D003", "Device not found for the elder"),
+    DEVICE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "D004", "Device access denied");
 
     private final HttpStatus status;
     private final String code;

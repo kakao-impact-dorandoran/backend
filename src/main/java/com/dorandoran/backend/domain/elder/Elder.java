@@ -46,6 +46,16 @@ public class Elder extends BaseTimeEntity {
     @Column(name = "age_group", length = 20)
     private String ageGroup;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", length = 20)
+    private Gender gender;
+
+    @Column(name = "profile_image_url", columnDefinition = "TEXT")
+    private String profileImageUrl;
+
+    @Column(name = "greeting_comment", length = 50)
+    private String greetingComment;
+
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
@@ -72,12 +82,16 @@ public class Elder extends BaseTimeEntity {
     private ElderStatus status;
 
     @Builder
-    private Elder(User guardian, String name, String ageGroup, String phoneNumber, String address,
+    private Elder(User guardian, String name, String ageGroup, Gender gender, String profileImageUrl,
+                  String greetingComment, String phoneNumber, String address,
                   List<String> interests, CallType preferredCallType, DifficultyLevel difficultyLevel,
                   String requestNotes, ElderStatus status) {
         this.guardian = guardian;
         this.name = name;
         this.ageGroup = ageGroup;
+        this.gender = gender;
+        this.profileImageUrl = profileImageUrl;
+        this.greetingComment = greetingComment;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.interests = interests;
@@ -85,6 +99,23 @@ public class Elder extends BaseTimeEntity {
         this.difficultyLevel = difficultyLevel == null ? DifficultyLevel.LOW : difficultyLevel;
         this.requestNotes = requestNotes;
         this.status = status == null ? ElderStatus.AVAILABLE : status;
+    }
+
+    public void update(String name, String ageGroup, Gender gender, String profileImageUrl,
+                       String greetingComment, String phoneNumber, String address,
+                       List<String> interests, CallType preferredCallType,
+                       DifficultyLevel difficultyLevel, String requestNotes) {
+        if (name != null) this.name = name;
+        if (ageGroup != null) this.ageGroup = ageGroup;
+        if (gender != null) this.gender = gender;
+        if (profileImageUrl != null) this.profileImageUrl = profileImageUrl;
+        if (greetingComment != null) this.greetingComment = greetingComment;
+        if (phoneNumber != null) this.phoneNumber = phoneNumber;
+        if (address != null) this.address = address;
+        if (interests != null) this.interests = interests;
+        if (preferredCallType != null) this.preferredCallType = preferredCallType;
+        if (difficultyLevel != null) this.difficultyLevel = difficultyLevel;
+        if (requestNotes != null) this.requestNotes = requestNotes;
     }
 
     public void markMatched() {

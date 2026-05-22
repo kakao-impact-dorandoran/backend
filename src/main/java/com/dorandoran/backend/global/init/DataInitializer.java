@@ -1,5 +1,15 @@
 package com.dorandoran.backend.global.init;
 
+import com.dorandoran.backend.domain.device.DeliveryStatus;
+import com.dorandoran.backend.domain.device.Device;
+import com.dorandoran.backend.domain.device.DeviceRepository;
+import com.dorandoran.backend.domain.device.DeviceStatus;
+import com.dorandoran.backend.domain.device.DeviceType;
+import com.dorandoran.backend.domain.elder.CallType;
+import com.dorandoran.backend.domain.elder.DifficultyLevel;
+import com.dorandoran.backend.domain.elder.Elder;
+import com.dorandoran.backend.domain.elder.ElderRepository;
+import com.dorandoran.backend.domain.elder.Gender;
 import com.dorandoran.backend.domain.user.Role;
 import com.dorandoran.backend.domain.user.User;
 import com.dorandoran.backend.domain.user.UserRepository;
@@ -16,6 +26,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Slf4j
 @Component
 @Profile("!test")
@@ -26,13 +39,15 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final YouthProfileRepository youthProfileRepository;
+    private final ElderRepository elderRepository;
+    private final DeviceRepository deviceRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public void run(String... args) {
         seedUser("youth@test.com", "청년 테스터", Role.YOUTH, "010-1111-1111", UserStatus.ACTIVE);
-        seedUser("guardian@test.com", "보호자 테스터", Role.GUARDIAN, "010-2222-2222", UserStatus.ACTIVE);
+        User guardian = seedUser("guardian@test.com", "보호자 테스터", Role.GUARDIAN, "010-2222-2222", UserStatus.ACTIVE);
         seedUser("admin@test.com", "관리자 테스터", Role.ADMIN, "010-3333-3333", UserStatus.ACTIVE);
 
         User approved = seedUser("youth_approved@test.com", "청년 승인완료", Role.YOUTH, "010-1000-0001", UserStatus.ACTIVE);
@@ -44,6 +59,11 @@ public class DataInitializer implements CommandLineRunner {
         seedYouthProfile(pending, YouthApprovalStatus.PENDING, null);
         seedYouthProfile(rejected, YouthApprovalStatus.REJECTED, "프로필 정보가 부족합니다.");
         seedYouthProfile(banned, YouthApprovalStatus.APPROVED, null);
+
+        Elder elder = seedElder(guardian);
+        if (elder != null) {
+            seedDevice(elder);
+        }
     }
 
     private User seedUser(String email, String name, Role role, String phone, UserStatus status) {
@@ -59,6 +79,49 @@ public class DataInitializer implements CommandLineRunner {
             log.info("[seed] Created {} account: {} / {} (status={})", role, email, DEFAULT_PASSWORD, status);
             return saved;
         });
+    }
+
+    private Elder seedElder(User guardian) {
+        List<Elder> existing = elderRepository.findAllByGuardian(guardian);
+        if (!existing.isEmpty()) {
+            return existing.get(0);
+        }
+        Elder elder = elderRepository.save(Elder.builder()
+                .guardian(guardian)
+                .name("박도란")
+                .ageGroup("70대")
+                .gender(Gender.FEMALE)
+                .profileImageUrl(null)
+                .greetingComment("꽃과 산책 이야기를 좋아합니다.")
+                .phoneNumber("010-1111-1111")
+                .address("서울시 종로구 도란도란길 1")
+                .interests(List.of("산책", "드라마", "꽃"))
+                .preferredCallType(CallType.VIDEO)
+                .difficultyLevel(DifficultyLevel.LOW)
+                .requestNotes("천천히 말해주시면 좋습니다.")
+                .build());
+        log.info("[seed] Created Elder {} for guardian {}", elder.getName(), guardian.getEmail());
+        return elder;
+    }
+
+    private void seedDevice(Elder elder) {
+        if (deviceRepository.findByElder_Id(elder.getId()).isPresent()) {
+            return;
+        }
+        Device device = deviceRepository.save(Device.builder()
+                .elder(elder)
+                .deviceType(DeviceType.TABLET)
+                .serialNumber("SEED-TABLET-0001")
+                .deviceToken(null)
+                .deliveryStatus(DeliveryStatus.DELIVERED)
+                .trackingNumber("SEED-TRK-0001")
+                .deliveryAddress(elder.getAddress())
+                .deliveredAt(LocalDateTime.now())
+                .deviceStatus(DeviceStatus.REGISTERED)
+                .registeredAt(LocalDateTime.now())
+                .lastConnectedAt(null)
+                .build());
+        log.info("[seed] Created Device {} for elder {}", device.getSerialNumber(), elder.getName());
     }
 
     private void seedYouthProfile(User youth, YouthApprovalStatus approvalStatus, String rejectionReason) {
