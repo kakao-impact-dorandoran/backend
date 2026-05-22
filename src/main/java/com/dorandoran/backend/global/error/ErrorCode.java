@@ -19,6 +19,9 @@ public enum ErrorCode {
     EMAIL_DUPLICATION(HttpStatus.CONFLICT, "U001", "Email already exists"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U002", "User not found"),
     PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "U003", "Password does not match"),
+    ACCOUNT_SUSPENDED(HttpStatus.FORBIDDEN, "U004", "운영 정책 위반으로 이용이 제한되었습니다."),
+    YOUTH_PENDING_APPROVAL(HttpStatus.FORBIDDEN, "U005", "관리자 승인 대기 중입니다."),
+    YOUTH_REJECTED(HttpStatus.FORBIDDEN, "U006", "가입 신청이 반려되었습니다."),
 
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A001", "Invalid token"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "A002", "Expired token"),
