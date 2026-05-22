@@ -31,7 +31,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class YouthMatchLimit extends BaseTimeEntity {
 
-    private static final int DEFAULT_MAX_MATCH_COUNT = 3;
+    private static final int DEFAULT_MAX_MATCH_COUNT = 5;
 
     @Id
     @GeneratedValue

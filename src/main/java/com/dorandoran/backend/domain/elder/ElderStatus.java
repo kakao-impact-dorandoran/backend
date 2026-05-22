@@ -1,7 +1,7 @@
 package com.dorandoran.backend.domain.elder;
 
 public enum ElderStatus {
-    WAITING,
+    AVAILABLE,
     MATCHED,
     INACTIVE
 }

@@ -23,16 +23,11 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A001", "Invalid token"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "A002", "Expired token"),
 
-    PHONE_VERIFICATION_REQUIRED(HttpStatus.BAD_REQUEST, "G001", "Phone verification required"),
-
     KEYWORD_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "Y001", "Keyword limit exceeded (max 5)"),
     FORBIDDEN_WORD_INCLUDED(HttpStatus.BAD_REQUEST, "Y002", "Greeting contains forbidden words"),
 
     MATCH_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "M001", "Youth match limit exceeded"),
     MATCH_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "Match not found"),
-
-    SUBSCRIPTION_EXHAUSTED(HttpStatus.CONFLICT, "S001", "Monthly session count exhausted"),
-    SUBSCRIPTION_INACTIVE(HttpStatus.CONFLICT, "S002", "Subscription is not active"),
 
     SCHEDULE_CONFLICT(HttpStatus.CONFLICT, "SC001", "Schedule conflict detected"),
 

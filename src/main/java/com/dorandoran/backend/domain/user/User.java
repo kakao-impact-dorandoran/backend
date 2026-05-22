@@ -43,6 +43,9 @@ public class User extends BaseTimeEntity {
     @Column(name = "role", length = 20, nullable = false)
     private Role role;
 
+    @Column(name = "partner_code", length = 50)
+    private String partnerCode;
+
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
@@ -58,11 +61,12 @@ public class User extends BaseTimeEntity {
 
     @Builder
     private User(String email, String password, String name, Role role,
-                 String phoneNumber, String profileUrl, UserStatus status) {
+                 String partnerCode, String phoneNumber, String profileUrl, UserStatus status) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;
+        this.partnerCode = partnerCode;
         this.phoneNumber = phoneNumber;
         this.profileUrl = profileUrl;
         this.status = status == null ? UserStatus.ACTIVE : status;

@@ -84,15 +84,15 @@ public class Elder extends BaseTimeEntity {
         this.preferredCallType = preferredCallType == null ? CallType.VIDEO : preferredCallType;
         this.difficultyLevel = difficultyLevel == null ? DifficultyLevel.LOW : difficultyLevel;
         this.requestNotes = requestNotes;
-        this.status = status == null ? ElderStatus.WAITING : status;
+        this.status = status == null ? ElderStatus.AVAILABLE : status;
     }
 
     public void markMatched() {
         this.status = ElderStatus.MATCHED;
     }
 
-    public void markWaiting() {
-        this.status = ElderStatus.WAITING;
+    public void markAvailable() {
+        this.status = ElderStatus.AVAILABLE;
     }
 
     public void markInactive() {
