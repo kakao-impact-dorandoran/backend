@@ -2,6 +2,7 @@ package com.dorandoran.backend.domain.match;
 
 import com.dorandoran.backend.domain.elder.Elder;
 import com.dorandoran.backend.domain.user.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,6 +13,12 @@ public interface MatchRepository extends JpaRepository<Match, UUID> {
     List<Match> findAllByYouth(User youth);
 
     List<Match> findAllByElder(Elder elder);
+
+    @EntityGraph(attributePaths = {"youth", "elder", "elder.guardian"})
+    List<Match> findAllByYouthOrderByCreatedAtDesc(User youth);
+
+    @EntityGraph(attributePaths = {"youth", "elder", "elder.guardian"})
+    List<Match> findAllByElder_GuardianOrderByCreatedAtDesc(User guardian);
 
     long countByYouthAndStatusIn(User youth, List<MatchStatus> statuses);
 

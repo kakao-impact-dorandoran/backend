@@ -40,6 +40,10 @@ public enum ErrorCode {
 
     MATCH_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "M001", "Youth match limit exceeded"),
     MATCH_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "Match not found"),
+    MATCH_ACCESS_DENIED(HttpStatus.FORBIDDEN, "M003", "Match access denied"),
+    DUPLICATE_MATCH(HttpStatus.CONFLICT, "M004", "Active match already exists for this youth and elder"),
+    ICEBREAKING_MESSAGE_REQUIRED(HttpStatus.BAD_REQUEST, "M005", "Icebreaking message is required"),
+    ELDER_NOT_AVAILABLE(HttpStatus.CONFLICT, "M006", "Elder is not available for matching"),
 
     SCHEDULE_CONFLICT(HttpStatus.CONFLICT, "SC001", "Schedule conflict detected"),
 

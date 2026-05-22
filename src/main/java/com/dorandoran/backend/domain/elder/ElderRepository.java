@@ -16,4 +16,6 @@ public interface ElderRepository extends JpaRepository<Elder, UUID> {
     Optional<Elder> findByIdAndGuardian(UUID id, User guardian);
 
     List<Elder> findAllByStatus(ElderStatus status);
+
+    List<Elder> findAllByStatusOrderByCreatedAtDesc(ElderStatus status);
 }

@@ -65,10 +65,14 @@ public class Match extends BaseTimeEntity {
     @Column(name = "ended_at")
     private LocalDateTime endedAt;
 
+    @Column(name = "icebreaking_message", columnDefinition = "TEXT", nullable = false)
+    private String icebreakingMessage;
+
     @Builder
-    private Match(User youth, Elder elder) {
+    private Match(User youth, Elder elder, String icebreakingMessage) {
         this.youth = youth;
         this.elder = elder;
+        this.icebreakingMessage = icebreakingMessage;
         this.status = MatchStatus.MATCHED;
         LocalDateTime now = LocalDateTime.now();
         this.selectedAt = now;
