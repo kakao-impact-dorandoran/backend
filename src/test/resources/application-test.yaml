@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:dorandoran_test;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.H2Dialect
+        jdbc:
+          time_zone: Asia/Seoul
+    open-in-view: false
+
+  sql:
+    init:
+      mode: never
+
+server:
+  port: 0
+
+dorandoran:
+  jwt:
+    secret: dorandoran-test-secret-key-please-change-in-production-32bytes-minimum-test-only
+    access-token-validity-ms: 3600000
+    refresh-token-validity-ms: 1209600000
+    issuer: dorandoran-test
