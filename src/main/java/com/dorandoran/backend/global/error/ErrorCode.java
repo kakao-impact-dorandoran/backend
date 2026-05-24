@@ -61,6 +61,23 @@ public enum ErrorCode {
     INVALID_AVAILABLE_TIME_QUERY(HttpStatus.BAD_REQUEST, "AT005", "ownerType and ownerId must both be provided"),
 
     ACTIVITY_RECORD_DUPLICATED(HttpStatus.CONFLICT, "AR001", "Activity record already exists for this schedule"),
+    ACTIVITY_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "AR002", "Activity record not found"),
+    ACTIVITY_RECORD_ACCESS_DENIED(HttpStatus.FORBIDDEN, "AR003", "Activity record access denied"),
+    ACTIVITY_RECORD_DUPLICATED_CALL_LOG(HttpStatus.CONFLICT, "AR004", "Activity record already exists for this call log"),
+    INVALID_ACTIVITY_DURATION(HttpStatus.BAD_REQUEST, "AR005", "Invalid activity duration"),
+    CALL_LOG_NOT_COMPLETED(HttpStatus.CONFLICT, "AR006", "Call log is not completed yet"),
+    ACTIVITY_MATCH_MISMATCH(HttpStatus.BAD_REQUEST, "AR007", "Activity record match mismatch"),
+    ACTIVITY_SCHEDULE_MISMATCH(HttpStatus.BAD_REQUEST, "AR008", "Schedule does not belong to the requested match"),
+    ACTIVITY_CALL_LOG_MISMATCH(HttpStatus.BAD_REQUEST, "AR009", "Call log does not belong to the requested match"),
+    ACTIVITY_MATCH_NOT_RECORDABLE(HttpStatus.CONFLICT, "AR010", "Match is not in a recordable state"),
+
+    VOLUNTEER_STATS_NOT_FOUND(HttpStatus.NOT_FOUND, "VS001", "Volunteer stats not found"),
+
+    CERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "CT001", "Certificate not found"),
+    CERTIFICATE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "CT002", "Certificate access denied"),
+    CERTIFICATE_NOT_ENOUGH_ACTIVITY_TIME(HttpStatus.CONFLICT, "CT003", "발급 기준 시간이 부족합니다."),
+    CERTIFICATE_SERIAL_DUPLICATED(HttpStatus.CONFLICT, "CT004", "Certificate serial already exists"),
+    CERTIFICATE_REQUESTED_HOURS_INVALID(HttpStatus.BAD_REQUEST, "CT005", "발급 신청 시간이 유효하지 않습니다."),
 
     DEVICE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "D001", "Device token is invalid"),
 
