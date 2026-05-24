@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-import java.util.Collections;
 import java.util.Map;
 
 @Converter
@@ -29,7 +28,7 @@ public class MapJsonConverter implements AttributeConverter<Map<String, Object>,
     @Override
     public Map<String, Object> convertToEntityAttribute(String dbData) {
         if (dbData == null || dbData.isBlank()) {
-            return Collections.emptyMap();
+            return null;
         }
         try {
             return MAPPER.readValue(dbData, TYPE);
