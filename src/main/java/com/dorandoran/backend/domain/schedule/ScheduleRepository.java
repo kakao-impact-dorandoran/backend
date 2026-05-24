@@ -43,4 +43,17 @@ public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
     boolean existsConflictForElder(@Param("elderId") UUID elderId,
                                    @Param("startAt") LocalDateTime startAt,
                                    @Param("endAt") LocalDateTime endAt);
+
+    @EntityGraph(attributePaths = {"match", "match.youth", "match.elder", "match.elder.guardian"})
+    @Query("""
+            SELECT s FROM Schedule s
+            WHERE s.match.elder.id = :elderId
+              AND s.status = com.dorandoran.backend.domain.schedule.ScheduleStatus.CONFIRMED
+              AND s.scheduledStartAt >= :dayStart
+              AND s.scheduledStartAt < :dayEnd
+            ORDER BY s.scheduledStartAt ASC
+            """)
+    List<Schedule> findConfirmedTodayByElderId(@Param("elderId") UUID elderId,
+                                               @Param("dayStart") LocalDateTime dayStart,
+                                               @Param("dayEnd") LocalDateTime dayEnd);
 }

@@ -71,6 +71,8 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
+
+
     private void seedAvailableTimes(User youth, Elder elder, User guardian) {
         LocalDateTime start = LocalDateTime.now()
                 .plusDays(1)
@@ -141,24 +143,25 @@ public class DataInitializer implements CommandLineRunner {
         return elder;
     }
 
-    private void seedDevice(Elder elder) {
-        if (deviceRepository.findByElder_Id(elder.getId()).isPresent()) {
-            return;
-        }
-        Device device = deviceRepository.save(Device.builder()
-                .elder(elder)
-                .deviceType(DeviceType.TABLET)
-                .serialNumber("SEED-TABLET-0001")
-                .deviceToken(null)
-                .deliveryStatus(DeliveryStatus.DELIVERED)
-                .trackingNumber("SEED-TRK-0001")
-                .deliveryAddress(elder.getAddress())
-                .deliveredAt(LocalDateTime.now())
-                .deviceStatus(DeviceStatus.REGISTERED)
-                .registeredAt(LocalDateTime.now())
-                .lastConnectedAt(null)
-                .build());
-        log.info("[seed] Created Device {} for elder {}", device.getSerialNumber(), elder.getName());
+    private Device seedDevice(Elder elder) {
+        return deviceRepository.findByElder_Id(elder.getId()).orElseGet(() -> {
+            Device device = deviceRepository.save(Device.builder()
+                    .elder(elder)
+                    .deviceType(DeviceType.TABLET)
+                    .serialNumber("SEED-TABLET-0001")
+                    .deviceToken("seed-device-token-0001")
+                    .deliveryStatus(DeliveryStatus.DELIVERED)
+                    .trackingNumber("SEED-TRK-0001")
+                    .deliveryAddress(elder.getAddress())
+                    .deliveredAt(LocalDateTime.now())
+                    .deviceStatus(DeviceStatus.REGISTERED)
+                    .registeredAt(LocalDateTime.now())
+                    .lastConnectedAt(null)
+                    .build());
+            log.info("[seed] Created Device {} for elder {} (token={})",
+                    device.getSerialNumber(), elder.getName(), device.getDeviceToken());
+            return device;
+        });
     }
 
     private void seedYouthProfile(User youth, YouthApprovalStatus approvalStatus, String rejectionReason) {
