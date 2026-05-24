@@ -108,7 +108,11 @@ public enum ErrorCode {
     MATCH_TERMINATION_ALREADY_REQUESTED(HttpStatus.CONFLICT, "MT002", "Match termination already requested"),
     INVALID_MATCH_TERMINATION_STATUS(HttpStatus.BAD_REQUEST, "MT003", "Invalid match termination status"),
     MATCH_TERMINATION_ACCESS_DENIED(HttpStatus.FORBIDDEN, "MT004", "Match termination access denied"),
-    MATCH_ALREADY_ENDED(HttpStatus.CONFLICT, "MT005", "Match is already ended");
+    MATCH_ALREADY_ENDED(HttpStatus.CONFLICT, "MT005", "Match is already ended"),
+
+    HELP_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "H001", "Help request not found"),
+    HELP_REQUEST_ALREADY_HANDLED(HttpStatus.CONFLICT, "H002", "Help request is already handled"),
+    INVALID_HELP_REQUEST_STATUS(HttpStatus.BAD_REQUEST, "H003", "Invalid help request status");
 
     private final HttpStatus status;
     private final String code;

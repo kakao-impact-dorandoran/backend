@@ -40,7 +40,8 @@ public class SecurityConfig {
 
     private static final String[] DEVICE_AUTH_ENDPOINTS = {
             "/api/v1/device/**",
-            "/api/v1/calls/**"
+            "/api/v1/calls/**",
+            "/api/v1/help-requests"
     };
 
     @Bean
