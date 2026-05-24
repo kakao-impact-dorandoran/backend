@@ -1,5 +1,8 @@
 package com.dorandoran.backend.global.init;
 
+import com.dorandoran.backend.domain.availabletime.AvailableTime;
+import com.dorandoran.backend.domain.availabletime.AvailableTimeOwnerType;
+import com.dorandoran.backend.domain.availabletime.AvailableTimeRepository;
 import com.dorandoran.backend.domain.device.DeliveryStatus;
 import com.dorandoran.backend.domain.device.Device;
 import com.dorandoran.backend.domain.device.DeviceRepository;
@@ -41,6 +44,7 @@ public class DataInitializer implements CommandLineRunner {
     private final YouthProfileRepository youthProfileRepository;
     private final ElderRepository elderRepository;
     private final DeviceRepository deviceRepository;
+    private final AvailableTimeRepository availableTimeRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -63,6 +67,39 @@ public class DataInitializer implements CommandLineRunner {
         Elder elder = seedElder(guardian);
         if (elder != null) {
             seedDevice(elder);
+            seedAvailableTimes(approved, elder, guardian);
+        }
+    }
+
+    private void seedAvailableTimes(User youth, Elder elder, User guardian) {
+        LocalDateTime start = LocalDateTime.now()
+                .plusDays(1)
+                .withHour(14).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime end = start.plusHours(1);
+
+        if (!availableTimeRepository.existsOverlapForYouth(youth.getId(), start, end)) {
+            availableTimeRepository.save(AvailableTime.builder()
+                    .ownerType(AvailableTimeOwnerType.YOUTH)
+                    .youth(youth)
+                    .registeredBy(youth)
+                    .startTime(start)
+                    .endTime(end)
+                    .isBooked(false)
+                    .build());
+            log.info("[seed] Created AvailableTime YOUTH {} ({} ~ {})",
+                    youth.getEmail(), start, end);
+        }
+        if (!availableTimeRepository.existsOverlapForElder(elder.getId(), start, end)) {
+            availableTimeRepository.save(AvailableTime.builder()
+                    .ownerType(AvailableTimeOwnerType.ELDER)
+                    .elder(elder)
+                    .registeredBy(guardian)
+                    .startTime(start)
+                    .endTime(end)
+                    .isBooked(false)
+                    .build());
+            log.info("[seed] Created AvailableTime ELDER {} ({} ~ {})",
+                    elder.getName(), start, end);
         }
     }
 
