@@ -46,6 +46,19 @@ public enum ErrorCode {
     ELDER_NOT_AVAILABLE(HttpStatus.CONFLICT, "M006", "Elder is not available for matching"),
 
     SCHEDULE_CONFLICT(HttpStatus.CONFLICT, "SC001", "Schedule conflict detected"),
+    SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "SC002", "Schedule not found"),
+    INVALID_SCHEDULE_TIME_RANGE(HttpStatus.BAD_REQUEST, "SC003", "Invalid schedule time range"),
+    SCHEDULE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "SC004", "Schedule access denied"),
+    SCHEDULE_ALREADY_CANCELED(HttpStatus.CONFLICT, "SC005", "Schedule is already canceled"),
+    SCHEDULE_ALREADY_COMPLETED(HttpStatus.CONFLICT, "SC006", "Schedule is already completed"),
+    MATCH_NOT_SCHEDULABLE(HttpStatus.CONFLICT, "SC007", "Match is not in a schedulable state"),
+    SCHEDULE_OUT_OF_AVAILABLE_TIME(HttpStatus.CONFLICT, "SC008", "Schedule time is not within available time slots"),
+
+    AVAILABLE_TIME_NOT_FOUND(HttpStatus.NOT_FOUND, "AT001", "Available time not found"),
+    INVALID_AVAILABLE_TIME_RANGE(HttpStatus.BAD_REQUEST, "AT002", "Invalid available time range"),
+    AVAILABLE_TIME_OVERLAPPED(HttpStatus.CONFLICT, "AT003", "Available time overlaps with existing entries"),
+    AVAILABLE_TIME_ACCESS_DENIED(HttpStatus.FORBIDDEN, "AT004", "Available time access denied"),
+    INVALID_AVAILABLE_TIME_QUERY(HttpStatus.BAD_REQUEST, "AT005", "ownerType and ownerId must both be provided"),
 
     ACTIVITY_RECORD_DUPLICATED(HttpStatus.CONFLICT, "AR001", "Activity record already exists for this schedule"),
 

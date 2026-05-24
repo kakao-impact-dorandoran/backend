@@ -1,5 +1,6 @@
 package com.dorandoran.backend.domain.match.service;
 
+import com.dorandoran.backend.domain.availabletime.AvailableTimeRepository;
 import com.dorandoran.backend.domain.elder.CallType;
 import com.dorandoran.backend.domain.elder.DifficultyLevel;
 import com.dorandoran.backend.domain.elder.Elder;
@@ -30,8 +31,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,18 +50,37 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final YouthProfileRepository youthProfileRepository;
     private final YouthMatchLimitRepository youthMatchLimitRepository;
+    private final AvailableTimeRepository availableTimeRepository;
 
     public List<MatchingElderListResponse> findMatchableElders(UUID youthUserId,
                                                                String interest,
                                                                CallType preferredCallType,
-                                                               DifficultyLevel difficultyLevel) {
+                                                               DifficultyLevel difficultyLevel,
+                                                               LocalDateTime availableFrom,
+                                                               LocalDateTime availableTo) {
         loadApprovedYouth(youthUserId);
+        if ((availableFrom == null) != (availableTo == null)) {
+            throw new BusinessException(ErrorCode.INVALID_AVAILABLE_TIME_RANGE);
+        }
+        if (availableFrom != null && !availableFrom.isBefore(availableTo)) {
+            throw new BusinessException(ErrorCode.INVALID_AVAILABLE_TIME_RANGE);
+        }
+
+        Set<UUID> overlappingElderIds = null;
+        if (availableFrom != null) {
+            overlappingElderIds = availableTimeRepository
+                    .findElderIdsWithOverlap(availableFrom, availableTo)
+                    .stream().collect(Collectors.toSet());
+        }
+        final Set<UUID> filterIds = overlappingElderIds;
+
         List<Elder> elders = elderRepository.findAllByStatusOrderByCreatedAtDesc(ElderStatus.AVAILABLE);
         return elders.stream()
                 .filter(e -> preferredCallType == null || e.getPreferredCallType() == preferredCallType)
                 .filter(e -> difficultyLevel == null || e.getDifficultyLevel() == difficultyLevel)
                 .filter(e -> interest == null || interest.isBlank()
                         || (e.getInterests() != null && e.getInterests().contains(interest)))
+                .filter(e -> filterIds == null || filterIds.contains(e.getId()))
                 .map(MatchingElderListResponse::from)
                 .toList();
     }
