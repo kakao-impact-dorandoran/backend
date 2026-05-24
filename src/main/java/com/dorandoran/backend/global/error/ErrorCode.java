@@ -98,7 +98,17 @@ public enum ErrorCode {
     CALL_MATCH_MISMATCH(HttpStatus.BAD_REQUEST, "CL004", "Match does not match the requested call context"),
     CALL_SCHEDULE_MISMATCH(HttpStatus.BAD_REQUEST, "CL005", "Schedule does not belong to the requested match"),
     CALL_SCHEDULE_NOT_CONFIRMED(HttpStatus.CONFLICT, "CL006", "Schedule is not confirmed"),
-    INVALID_CALL_TYPE(HttpStatus.BAD_REQUEST, "CL007", "Invalid call type");
+    INVALID_CALL_TYPE(HttpStatus.BAD_REQUEST, "CL007", "Invalid call type"),
+
+    REPORT_NOT_FOUND(HttpStatus.NOT_FOUND, "R001", "Report not found"),
+    INVALID_REPORT_STATUS(HttpStatus.BAD_REQUEST, "R002", "Invalid report status"),
+    REPORT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "R003", "Report access denied"),
+
+    MATCH_TERMINATION_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "MT001", "Match termination request not found"),
+    MATCH_TERMINATION_ALREADY_REQUESTED(HttpStatus.CONFLICT, "MT002", "Match termination already requested"),
+    INVALID_MATCH_TERMINATION_STATUS(HttpStatus.BAD_REQUEST, "MT003", "Invalid match termination status"),
+    MATCH_TERMINATION_ACCESS_DENIED(HttpStatus.FORBIDDEN, "MT004", "Match termination access denied"),
+    MATCH_ALREADY_ENDED(HttpStatus.CONFLICT, "MT005", "Match is already ended");
 
     private final HttpStatus status;
     private final String code;
