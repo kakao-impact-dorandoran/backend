@@ -70,7 +70,18 @@ public enum ErrorCode {
 
     DEVICE_NOT_FOUND(HttpStatus.NOT_FOUND, "D002", "Device not found"),
     DEVICE_NOT_FOUND_FOR_ELDER(HttpStatus.NOT_FOUND, "D003", "Device not found for the elder"),
-    DEVICE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "D004", "Device access denied");
+    DEVICE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "D004", "Device access denied"),
+    DEVICE_AUTH_REQUIRED(HttpStatus.UNAUTHORIZED, "D005", "Device authorization header is required"),
+    INVALID_DEVICE_AUTHORIZATION(HttpStatus.UNAUTHORIZED, "D006", "Invalid device authorization header"),
+    DEVICE_NOT_REGISTERED(HttpStatus.FORBIDDEN, "D007", "Device is not registered"),
+
+    CALL_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "CL001", "Call log not found"),
+    CALL_ACCESS_DENIED(HttpStatus.FORBIDDEN, "CL002", "Call log access denied"),
+    CALL_ALREADY_ENDED(HttpStatus.CONFLICT, "CL003", "Call log is already ended"),
+    CALL_MATCH_MISMATCH(HttpStatus.BAD_REQUEST, "CL004", "Match does not match the requested call context"),
+    CALL_SCHEDULE_MISMATCH(HttpStatus.BAD_REQUEST, "CL005", "Schedule does not belong to the requested match"),
+    CALL_SCHEDULE_NOT_CONFIRMED(HttpStatus.CONFLICT, "CL006", "Schedule is not confirmed"),
+    INVALID_CALL_TYPE(HttpStatus.BAD_REQUEST, "CL007", "Invalid call type");
 
     private final HttpStatus status;
     private final String code;
