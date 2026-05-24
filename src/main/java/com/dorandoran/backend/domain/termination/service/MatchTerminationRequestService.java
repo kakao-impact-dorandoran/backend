@@ -76,6 +76,10 @@ public class MatchTerminationRequestService {
         MatchTerminationRequest terminationRequest = terminationRequestRepository.findById(requestId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MATCH_TERMINATION_REQUEST_NOT_FOUND));
 
+        if (terminationRequest.getStatus() != MatchTerminationRequestStatus.REQUESTED) {
+            throw new BusinessException(ErrorCode.INVALID_MATCH_TERMINATION_STATUS);
+        }
+
         MatchTerminationRequestStatus newStatus = request.status();
         if (newStatus == MatchTerminationRequestStatus.REQUESTED) {
             throw new BusinessException(ErrorCode.INVALID_MATCH_TERMINATION_STATUS);

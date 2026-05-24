@@ -95,6 +95,10 @@ public class ReportService {
         Report report = reportRepository.findById(reportId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.REPORT_NOT_FOUND));
 
+        if (report.getStatus() == ReportStatus.RESOLVED || report.getStatus() == ReportStatus.REJECTED) {
+            throw new BusinessException(ErrorCode.INVALID_REPORT_STATUS);
+        }
+
         ReportStatus newStatus = request.status();
         if (newStatus == ReportStatus.PENDING) {
             throw new BusinessException(ErrorCode.INVALID_REPORT_STATUS);
