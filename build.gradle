@@ -45,4 +45,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 	maxParallelForks = 1
 	jvmArgs '-Xmx512m', '-XX:MaxMetaspaceSize=256m', '-Xss512k', '-XX:CICompilerCount=2', '-XX:ParallelGCThreads=2', '-XX:ConcGCThreads=1'
+	// 서비스 기준 시간대(KST)를 테스트 JVM에 고정하여
+	// LocalDateTime.now() 기반 픽스처가 호스트 TZ에 흔들리지 않도록 한다.
+	systemProperty 'user.timezone', 'Asia/Seoul'
 }
